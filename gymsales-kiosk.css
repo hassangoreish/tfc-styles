@@ -1,0 +1,327 @@
+/* =====================================================================
+   The Fitness Compound — ABC Gym Sales custom CSS
+   Guest sign-in + liability waiver (in-club iPad kiosk)
+
+   HOW TO USE
+   1. Paste this whole file into the Custom CSS box for the guest
+      registration / waiver form in Gym Sales.
+   2. Swap the brand values in the :root block below (colors, font, logo).
+   3. Open the form on the iPad and check it in portrait AND landscape.
+
+   Selectors are intentionally broad (form, input, label, button, canvas)
+   so they apply to the Gym Sales form markup without relying on internal
+   class names that can change. Everything is scoped under `body` so it
+   only affects the form page.
+   ===================================================================== */
+
+/* ---------- 1. Brand settings — edit these ---------- */
+:root {
+  --tfc-bg:            #111214;   /* page background (charcoal)          */
+  --tfc-card:          #ffffff;   /* form card background                */
+  --tfc-text:          #1a1b1e;   /* main text on card                   */
+  --tfc-muted:         #5f6368;   /* helper text, placeholders           */
+  --tfc-border:        #d5d8dc;   /* input borders                       */
+  --tfc-accent:        #ff4d1f;   /* buttons, focus, checkmarks — SWAP   */
+  --tfc-accent-hover:  #e03d12;   /* pressed state for buttons           */
+  --tfc-accent-text:   #ffffff;   /* text on accent buttons              */
+  --tfc-error:         #c62828;
+  --tfc-success:       #2e7d32;
+
+  --tfc-font: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --tfc-heading-font: "Inter", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+
+  --tfc-radius: 12px;
+  --tfc-tap: 56px;              /* min height for anything you tap     */
+}
+
+/* ---------- 2. Page + kiosk behavior ---------- */
+html, body {
+  background: var(--tfc-bg) !important;
+  color: var(--tfc-text);
+  font-family: var(--tfc-font) !important;
+  font-size: 18px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;   /* no grey flash on tap */
+  overscroll-behavior: none;                  /* no rubber-band bounce */
+}
+
+body {
+  margin: 0;
+  padding: 32px 24px 64px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Stop iPad long-press callouts / accidental text selection on UI chrome */
+button, label, .btn, [type="submit"], [type="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* ---------- 3. Form card ---------- */
+form {
+  max-width: 760px;
+  margin: 0 auto !important;
+  background: var(--tfc-card) !important;
+  border-radius: calc(var(--tfc-radius) * 1.5);
+  padding: 40px 40px 32px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+/* Logo (if the form shows one) */
+form img:first-of-type,
+.logo img, img.logo {
+  display: block;
+  max-height: 80px;
+  width: auto;
+  margin: 0 auto 24px;
+}
+
+/* ---------- 4. Headings + text ---------- */
+h1, h2, h3, legend {
+  font-family: var(--tfc-heading-font) !important;
+  color: var(--tfc-text);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+h1 { font-size: 34px; text-align: center; margin: 0 0 8px; }
+h2 { font-size: 26px; margin: 32px 0 12px; }
+h3, legend { font-size: 21px; margin: 24px 0 10px; }
+
+p, li { font-size: 18px; color: var(--tfc-text); }
+small, .help-block, .hint { font-size: 15px; color: var(--tfc-muted); }
+
+a { color: var(--tfc-accent); font-weight: 600; }
+
+/* ---------- 5. Labels + fields ---------- */
+label {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--tfc-text);
+  margin: 18px 0 6px;
+}
+
+/* 16px+ on inputs prevents Safari from zooming in on focus */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="date"],
+input[type="password"],
+input:not([type]),
+select,
+textarea {
+  display: block;
+  width: 100% !important;
+  min-height: var(--tfc-tap);
+  padding: 14px 16px;
+  font-family: var(--tfc-font);
+  font-size: 19px !important;
+  color: var(--tfc-text);
+  background: #fafbfc;
+  border: 2px solid var(--tfc-border) !important;
+  border-radius: var(--tfc-radius) !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color .15s, box-shadow .15s, background .15s;
+}
+
+textarea { min-height: 120px; resize: vertical; }
+
+input::placeholder, textarea::placeholder { color: #9aa0a6; }
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--tfc-accent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--tfc-accent) 22%, transparent) !important;
+}
+
+/* Custom dropdown arrow (since appearance is reset) */
+select {
+  padding-right: 48px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%235f6368' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+}
+
+/* Two-column name / phone rows in landscape */
+@media (min-width: 900px) {
+  .row, .form-row { display: flex; gap: 20px; }
+  .row > *, .form-row > * { flex: 1; }
+}
+
+/* ---------- 6. Checkboxes + radios (big, tappable) ---------- */
+input[type="checkbox"],
+input[type="radio"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  margin: 0 14px 0 0;
+  vertical-align: middle;
+  border: 2px solid var(--tfc-border);
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: background .15s, border-color .15s;
+}
+input[type="checkbox"] { border-radius: 8px; }
+input[type="radio"]    { border-radius: 50%; }
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background: var(--tfc-accent);
+  border-color: var(--tfc-accent);
+}
+input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 9px; top: 4px;
+  width: 8px; height: 15px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+input[type="radio"]:checked::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Label that wraps a checkbox ("I agree to the waiver…") */
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+  display: flex;
+  align-items: center;
+  min-height: var(--tfc-tap);
+  padding: 12px 16px;
+  font-weight: 600;
+  border: 2px solid var(--tfc-border);
+  border-radius: var(--tfc-radius);
+  background: #fafbfc;
+}
+label:has(> input:checked) {
+  border-color: var(--tfc-accent);
+  background: color-mix(in srgb, var(--tfc-accent) 7%, #fff);
+}
+
+/* ---------- 7. Waiver text box ---------- */
+/* Long waiver copy scrolls inside its own box so the form stays usable */
+.waiver, .waiver-text, .terms, .agreement,
+div[class*="waiver"], div[class*="terms"] {
+  max-height: 340px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 20px 22px;
+  margin: 12px 0 20px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--tfc-text);
+  background: #f4f5f7;
+  border: 2px solid var(--tfc-border);
+  border-radius: var(--tfc-radius);
+}
+
+/* ---------- 8. Signature pad ---------- */
+canvas,
+.signature, .signature-pad, div[class*="signature"] {
+  display: block;
+  width: 100% !important;
+  min-height: 200px;
+  background: #fff !important;
+  border: 2px dashed var(--tfc-muted) !important;
+  border-radius: var(--tfc-radius);
+  touch-action: none;           /* keeps the page from scrolling while signing */
+}
+
+/* "Clear signature" link/button */
+.signature button, .clear, [class*="clear"] {
+  min-height: 44px;
+  padding: 8px 18px;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--tfc-text) !important;
+  background: transparent !important;
+  border: 2px solid var(--tfc-border) !important;
+  border-radius: 999px;
+}
+
+/* ---------- 9. Submit button ---------- */
+button[type="submit"],
+input[type="submit"],
+.btn-primary, .submit, .btn-submit {
+  display: block;
+  width: 100%;
+  min-height: 68px;
+  margin: 32px 0 0;
+  padding: 18px 24px;
+  font-family: var(--tfc-heading-font);
+  font-size: 22px !important;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tfc-accent-text) !important;
+  background: var(--tfc-accent) !important;
+  border: none !important;
+  border-radius: var(--tfc-radius) !important;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--tfc-accent) 35%, transparent);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  transition: transform .08s, background .15s;
+}
+button[type="submit"]:active,
+input[type="submit"]:active,
+.btn-primary:active, .submit:active, .btn-submit:active {
+  background: var(--tfc-accent-hover) !important;
+  transform: scale(0.985);
+}
+button[disabled], input[type="submit"][disabled] {
+  opacity: .45;
+  box-shadow: none;
+}
+
+/* ---------- 10. Validation + messages ---------- */
+.error, .field-error, .has-error .help-block, .invalid-feedback {
+  color: var(--tfc-error) !important;
+  font-size: 15px;
+  font-weight: 600;
+  margin-top: 6px;
+}
+.has-error input, .has-error select, input.error, input:invalid:not(:placeholder-shown) {
+  border-color: var(--tfc-error) !important;
+}
+.alert-success, .success, .thank-you {
+  padding: 24px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--tfc-success);
+  background: #edf7ee;
+  border-radius: var(--tfc-radius);
+}
+
+/* ---------- 11. Hide clutter on the kiosk ---------- */
+/* Uncomment anything Gym Sales shows that guests shouldn't tap away to */
+/*
+footer, .powered-by, .footer-links, nav { display: none !important; }
+*/
+
+/* ---------- 12. Portrait iPad tweaks ---------- */
+@media (max-width: 834px) {
+  body { padding: 20px 14px 48px; }
+  form { padding: 28px 22px 24px; }
+  h1 { font-size: 28px; }
+}
